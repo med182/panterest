@@ -75,17 +75,6 @@ class PinController extends AbstractController
         );
     }
 
-    #[Route('/pins/{id<[0-9]+>}/delete', name: 'pins_delete', methods: ["DELETE"])]
-    public function delete(Pin $pin, EntityManagerInterface $em, Request $request): Response
-    {
-        if ($this->isCsrfTokenValid('pins_deletion' . $pin->getId(), $request->request->get('csrf_token'))) {
-            $em->remove($pin);
-            $em->flush();
-        }
-        $this->addFlash('info', 'Pin successfully deleted!');
-        return  $this->redirectToRoute('app_home');
-    }
-
     #[Route('/pins/{id<[0-9]+>}', name: 'pins_show')]
     public function show(Pin $pin): Response
     {
@@ -96,5 +85,18 @@ class PinController extends AbstractController
             compact('pin')
 
         );
+    }
+    #[Route('/pins/{id<[0-9]+>}/delete', name: 'pins_delete', methods: ['DELETE'])]
+    public function delete(Request $request, Pin $pin, EntityManagerInterface $em): Response
+    {
+
+        if ($this->isCsrfTokenValid('pin' . $pin->getId(), $request->request->get('csrf_token'))) {
+            $em->remove($pin);
+            $em->flush();
+            $this->addFlash('info', 'Pin successfully deleted!');
+        }
+
+
+        return $this->redirectToRoute('app_home');
     }
 }

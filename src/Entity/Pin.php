@@ -30,7 +30,9 @@ class Pin
     private ?int $id = null;
 
     #[Vich\UploadableField(mapping: 'pin_image', fileNameProperty: 'imageName')]
+    #[Assert\Image(maxSize: "8M")]
     private ?File $imageFile = null;
+
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Title cannot be blank')]

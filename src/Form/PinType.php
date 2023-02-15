@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Pin;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
@@ -28,8 +29,8 @@ class PinType extends AbstractType
 
             ])
 
-            ->add('title')
-            ->add('description');
+            ->add('title', TextareaType::class)
+            ->add('description', TextareaType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

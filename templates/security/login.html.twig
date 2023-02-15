@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Log in!' %}
+
+
+{% block body %}
+	<div class="row">
+		<div class="col-md-6 mx-auto">
+			<h1 class="text-center mt-5 mb-3">Please sign in</h1>
+			<p class="mb-5 text-center text-muted">
+				Your pins are waiting for you.
+			</p>
+			<form method="post">
+				{% if error %}
+					<div class="alert alert-danger rounded mb-3" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+				{% endif %}
+
+				<div class="mb-3">
+					<label for="Email" class="mb-2">Email</label>
+					<input type="email" value="{{ last_username }}" name="email" id="Email" class="form-control" autocomplete="email" required autofocus>
+				</div>
+				<div class="mb-3">
+					<label for="Password">Password</label>
+					<input type="password" name="password" id="Password" class="form-control" autocomplete="current-password" required>
+				</div>
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<div class="d-flex justify-content-between">
+
+					<div class="mb-3">
+
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="_remember_me" id="_remember_me">
+							<label class="form-check-label" for="_remember_me">
+								Remember me
+							</label>
+						</div>
+
+					</div>
+					<a href="{{path('app_forgot_password_request')}}">Forgot password?</a>
+				</div>
+
+				<button class="col-12 btn btn-lg btn-primary" type="submit">
+					Sign in
+				</button>
+			</form>
+			<p class="mt-5 mb-3 text-muted text-center">Not registred yet?
+				<a href="#">Create an account</a>
+			</p>
+
+		</div>
+
+	{% endblock %}

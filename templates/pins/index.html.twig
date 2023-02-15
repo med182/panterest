@@ -13,7 +13,7 @@
 				{% for pin in row %}
 					<div class="col-md-4">
 						<article class="pin bg-white rounded shadow">
-							<div class="mw-100 overflow-hidden">
+							<div class="mw-100 rounded-top overflow-hidden">
 
 								<a href="{{ path('pins_show', {id: pin.id})}}">
 									<img src="{{ (pin.imageName ? vich_uploader_asset(pin) : asset('build/images/placeholder.png')) | imagine_filter('squared_thumbnail_medium') }}" alt="{{ pin.title }}" class="w-100 rounded-top">
@@ -25,8 +25,19 @@
 
 							<p class="pl-3 pb-3 text-muted">
 								<small>
-									Submitted [owner full name]</small>
+									Submitted by
+									{{ pin.user.fullName}}
+								</small>
 							</p>
+
+
+							{# <a href="#" onclick="event.preventDefault(); confirm('Are you sure') && document.getElementById('js-pin-delete-form-{{pin.id}}').submit();" class="m-3 btn btn-danger ">&times; Delete
+														</a>
+														<form id="js-pin-delete-form-{{pin.id}}" action="{{ path('pins_delete', {id:pin.id})}}" method="post" style="display:none;">
+															<input type="hidden" name="csrf_token" value="{{csrf_token('pin' ~ pin.id)}}">
+															<input type="hidden" name="_method" value="DELETE">
+							
+														</form> #}
 						</article>
 
 					</div>

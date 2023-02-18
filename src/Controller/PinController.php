@@ -10,7 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
 
 class PinController extends AbstractController
 {
@@ -27,8 +29,13 @@ class PinController extends AbstractController
     }
 
     #[Route('/pins/create', name: 'pins_create', methods: ['GET', 'POST'])]
+    #[Security("is_granted('ROLE_USER') && user.isVerified()== true")]
+
     public function create(Request $request, EntityManagerInterface $em, UserRepository $repo): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
+
         $pin = new Pin;
 
         $form = $this->createForm(PinType::class, $pin);

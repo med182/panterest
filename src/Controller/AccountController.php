@@ -15,20 +15,22 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 #[Route("/account")]
-#[IsGranted("ROLE_USER")]
+
 class AccountController extends AbstractController
 {
     #[Route('', name: 'app_account', methods: "GET")]
+    #[IsGranted("ROLE_USER")]
     public function show(): Response
     {
         return $this->render('account/show.html.twig', []);
     }
 
-    #[Route("/edit", name: "app_account_edit", methods: ["GET", "POST"])]
+    #[Route("/edit", name: "app_account_edit", methods: ["GET", "PATCH"])]
+    #[isGranted("IS_AUTHENTICATED_FULLY")]
     public function edit(Request $request, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(UserFormType::class, $user);
+        $form = $this->createForm(UserFormType::class, $user, ['method' => 'PATCH']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
@@ -39,7 +41,7 @@ class AccountController extends AbstractController
     }
 
 
-    #[Route("/change-password", name: "app_account_change_password", methods: ["GET", "POST"])]
+    #[Route("/change-password", name: "app_account_change_password", methods: ["GET", "PATCH"])]
     public function changePassword(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
